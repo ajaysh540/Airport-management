@@ -1,0 +1,169 @@
+CREATE SCHEMA IF NOT EXISTS `airport` DEFAULT CHARACTER SET latin1 ;
+USE `airport` ;
+
+-- -----------------------------------------------------
+-- Table `airport`.`admin_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`admin_details` (
+  `admin_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(50) NOT NULL,
+  `last_name` VARCHAR(50) NOT NULL,
+  `age` INT(11) NOT NULL,
+  `gender` VARCHAR(8) NOT NULL,
+  `dob` VARCHAR(10) NOT NULL,
+  `contact` INT(11) NOT NULL,
+  `alt_contact` INT(11) NULL DEFAULT NULL,
+  `email` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(15) NOT NULL,
+  `status` INT(1) NULL DEFAULT '0',
+  PRIMARY KEY (`admin_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 105
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`hangar_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`hangar_details` (
+  `hangar_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `manager_id` VARCHAR(100) NOT NULL,
+  `manager_address1` VARCHAR(100) NOT NULL,
+  `manager_address2` VARCHAR(100) NULL DEFAULT NULL,
+  `city` VARCHAR(50) NOT NULL,
+  `state` VARCHAR(50) NOT NULL,
+  `zipcode` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`hangar_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1004
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`hangar_status`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`hangar_status` (
+  `s_no` INT(11) NOT NULL AUTO_INCREMENT,
+  `hangar_id` INT(11) NOT NULL,
+  `manager_id` VARCHAR(45) NOT NULL,
+  `status` VARCHAR(1) NOT NULL,
+  `occupancy_from_date` VARCHAR(10) NULL DEFAULT NULL,
+  `occupancy_till_date` VARCHAR(10) NULL DEFAULT NULL,
+  `available_from_date` VARCHAR(10) NULL DEFAULT NULL,
+  `available_till_date` VARCHAR(10) NULL DEFAULT NULL,
+  PRIMARY KEY (`s_no`, `hangar_id`),
+  INDEX `hangarid_idx` (`hangar_id` ASC),
+  CONSTRAINT `hangar_id`
+    FOREIGN KEY (`hangar_id`)
+    REFERENCES `airport`.`hangar_details` (`hangar_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`manager_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`manager_details` (
+  `manager_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(50) NOT NULL,
+  `last_name` VARCHAR(50) NOT NULL,
+  `age` INT(11) NOT NULL,
+  `gender` VARCHAR(5) NOT NULL,
+  `dob` VARCHAR(10) NULL DEFAULT NULL,
+  `contact` INT(11) NOT NULL,
+  `alt_contact` INT(11) NULL DEFAULT NULL,
+  `email` VARCHAR(50) NULL DEFAULT NULL,
+  `password` VARCHAR(15) NOT NULL,
+  `status` INT(1) NULL DEFAULT '0',
+  PRIMARY KEY (`manager_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 205
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`pilot_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`pilot_details` (
+  `pilot_id` INT(8) NOT NULL AUTO_INCREMENT,
+  `license_number` VARCHAR(100) NOT NULL,
+  `address1` VARCHAR(100) NOT NULL,
+  `address2` VARCHAR(100) NOT NULL,
+  `city` VARCHAR(50) NOT NULL,
+  `state` VARCHAR(50) NOT NULL,
+  `zipcode` VARCHAR(10) NOT NULL,
+  `ssn` INT(9) NOT NULL,
+  PRIMARY KEY (`pilot_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1304
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`planes_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`planes_details` (
+  `plane_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` INT(11) NOT NULL,
+  `owner_first_name` VARCHAR(50) NOT NULL,
+  `owner_last_name` VARCHAR(50) NOT NULL,
+  `owner_contact` INT(11) NOT NULL,
+  `owner_email` VARCHAR(45) NOT NULL,
+  `plane_type` VARCHAR(45) NOT NULL,
+  `plane_capacity` INT(11) NOT NULL,
+  PRIMARY KEY (`plane_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1104
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`pilot_plane_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`pilot_plane_details` (
+  `S_No` INT(11) NOT NULL AUTO_INCREMENT,
+  `pilots_pilot_id` INT(8) NOT NULL,
+  `planes_plane_id` INT(11) NOT NULL,
+  PRIMARY KEY (`S_No`),
+  INDEX `fk_assignpilot_pilots1_idx` (`pilots_pilot_id` ASC),
+  INDEX `fk_assignpilot_planes1_idx` (`planes_plane_id` ASC),
+  CONSTRAINT `fk_assignpilot_pilots1`
+    FOREIGN KEY (`pilots_pilot_id`)
+    REFERENCES `airport`.`pilot_details` (`pilot_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_assignpilot_planes1`
+    FOREIGN KEY (`planes_plane_id`)
+    REFERENCES `airport`.`planes_details` (`plane_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `airport`.`plane_hangar_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `airport`.`plane_hangar_details` (
+  `S_no` INT(11) NOT NULL AUTO_INCREMENT,
+  `planes_plane_id` INT(11) NOT NULL,
+  `hangar_hangar_id` INT(11) NOT NULL,
+  PRIMARY KEY (`S_no`),
+  INDEX `fk_Plane_hanger_details_planes1_idx` (`planes_plane_id` ASC),
+  INDEX `fk_Plane_hanger_details_hangar1_idx` (`hangar_hangar_id` ASC),
+  CONSTRAINT `fk_Plane_hanger_details_hangar1`
+    FOREIGN KEY (`hangar_hangar_id`)
+    REFERENCES `airport`.`hangar_details` (`hangar_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Plane_hanger_details_planes1`
+    FOREIGN KEY (`planes_plane_id`)
+    REFERENCES `airport`.`planes_details` (`plane_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = latin1;

@@ -1,0 +1,5 @@
+"manager_id";"first_name";"last_name";"age";"gender";"dob";"contact";"alt_contact";"email";"password";"status"
+201;"Ajay";"Sharma";21;"male";"1997-12-20";325412454;0;"asdafdfdag@aaa.com";"pass";1
+202;"v";"v";1;"male";"123";234;563;"b@gmail.com";"v";1
+203;"ram";"kumar";32;"male";"1997-09-09";98789878;9898789;"ram@gmail.com";"ram";1
+204;"ajay";"sharma";21;"male";"1998-07-01";6832989;73998098;"ajay@gmail.com";"ajay";1
